@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apartment · Plaza Brickell Collection</title>
+  <meta name="description" content="Luxury apartment at The Plaza on Brickell, Miami. Bay & skyline views, resort-style pools, 24h security.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Plaza Brickell Collection — The Plaza on Brickell, Miami">
+  <meta property="og:image" content="https://miguelf660.github.io/plaza-brickell/assets/img/brand/og.jpg">
+  <meta name="theme-color" content="#163a4c">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="assets/img/brand/logo.jpg">
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a class="nav__logo" href="index.html">
+        <img src="assets/img/brand/logo.jpg" alt="Plaza Brickell Collection">
+      </a>
+      <nav class="nav__links">
+        <a href="index.html#apartamentos" data-ui="nav_apts">Apartments</a>
+        <a href="index.html#anfitriona" data-ui="nav_host">Host</a>
+        <a href="index.html#zona" data-ui="nav_area">The area</a>
+        <a href="index.html#contacto" data-ui="nav_contact">Contact</a>
+      </nav>
+      <div class="nav__actions">
+        <div class="lang">
+          <button data-lang="es">ES</button>
+          <button data-lang="en">EN</button>
+        </div>
+        <a class="btn btn--wa" data-wa target="_blank" rel="noopener" href="#">💬 <span data-ui="cta_wa">WhatsApp</span></a>
+        <button class="nav__burger" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DETALLE (render JS) -->
+  <main id="detail"></main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="assets/img/brand/logo.jpg" alt="Plaza Brickell Collection">
+          <p style="margin-top:.8rem;max-width:280px;font-size:.9rem" data-bind="SITE.logoSub">Luxury stays &amp; investments</p>
+        </div>
+        <nav class="footer__links">
+          <a href="index.html#apartamentos" data-ui="nav_apts">Apartments</a>
+          <a href="index.html#anfitriona" data-ui="nav_host">Host</a>
+          <a href="index.html#zona" data-ui="nav_area">The area</a>
+          <a href="index.html#contacto" data-ui="nav_contact">Contact</a>
+          <a data-wa target="_blank" rel="noopener" href="#">WhatsApp</a>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="year"></span> <span data-bind="SITE.brand">Plaza Brickell Collection</span>. <span data-ui="foot_rights">All rights reserved.</span></span>
+        <span data-bind="SITE.host.name">Marga Rivera</span> · <a data-bind-href="SITE.emailHref" data-bind="SITE.email" href="#">email</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lb" id="lb">
+    <button class="lb__close" aria-label="Close">✕</button>
+    <button class="lb__nav lb__prev" aria-label="Previous">‹</button>
+    <img src="" alt="">
+    <button class="lb__nav lb__next" aria-label="Next">›</button>
+    <div class="lb__counter"></div>
+  </div>
+
+  <a class="fab" data-wa target="_blank" rel="noopener" href="#" aria-label="WhatsApp">💬</a>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

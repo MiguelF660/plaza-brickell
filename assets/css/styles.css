@@ -1,0 +1,238 @@
+/* ============================================================================
+   Plaza Brickell Collection — Estilos
+   Paleta de marca: azul Brickell (logo) + dorado cálido, fondo claro elegante.
+   ============================================================================ */
+:root{
+  --navy:#163a4c;
+  --teal:#2c6f88;
+  --teal-d:#1f5167;
+  --steel:#6f9bb0;
+  --gold:#c9a96e;
+  --gold-d:#b08f4f;
+  --ink:#1b2329;
+  --muted:#5d6b73;
+  --bg:#ffffff;
+  --bg-soft:#f6f3ee;
+  --line:#e7e1d6;
+  --shadow:0 18px 50px rgba(22,58,76,.14);
+  --shadow-sm:0 8px 24px rgba(22,58,76,.10);
+  --font-head:'Sora',system-ui,sans-serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --maxw:1200px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:600;line-height:1.15;color:var(--navy)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.eyebrow{
+  font-family:var(--font-head);font-size:.78rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold-d);
+}
+.section{padding:88px 0}
+.section--soft{background:var(--bg-soft)}
+.section-head{max-width:720px;margin:0 auto 48px;text-align:center}
+.section-head h2{font-size:clamp(1.8rem,3.4vw,2.6rem);margin:.4rem 0 .6rem}
+.section-head p{color:var(--muted);font-size:1.05rem}
+.lead{color:var(--muted)}
+
+/* Botones */
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--font-head);font-weight:500;font-size:.95rem;
+  padding:.85rem 1.5rem;border-radius:999px;border:1px solid transparent;
+  cursor:pointer;transition:.25s ease;white-space:nowrap;
+}
+.btn--gold{background:var(--gold);color:#23303a}
+.btn--gold:hover{background:var(--gold-d);color:#fff;transform:translateY(-1px)}
+.btn--navy{background:var(--navy);color:#fff}
+.btn--navy:hover{background:var(--teal-d);transform:translateY(-1px)}
+.btn--wa{background:#25d366;color:#06371a}
+.btn--wa:hover{background:#1eb455;color:#fff;transform:translateY(-1px)}
+.btn--ghost{background:transparent;border-color:var(--line);color:var(--navy)}
+.btn--ghost:hover{border-color:var(--gold);color:var(--gold-d)}
+.btn--lg{padding:1rem 1.9rem;font-size:1rem}
+
+/* ---------------- NAV ---------------- */
+.nav{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.nav__inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+.nav__logo{display:flex;align-items:center;gap:.6rem}
+.nav__logo img{height:42px;width:auto}
+.nav__links{display:flex;align-items:center;gap:1.6rem}
+.nav__links a{font-family:var(--font-head);font-size:.92rem;color:var(--navy);transition:.2s}
+.nav__links a:hover{color:var(--gold-d)}
+.nav__actions{display:flex;align-items:center;gap:.75rem}
+.lang{
+  display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;
+  font-family:var(--font-head);font-size:.8rem;
+}
+.lang button{background:transparent;border:0;padding:.4rem .7rem;cursor:pointer;color:var(--muted);font-family:inherit}
+.lang button.is-active{background:var(--navy);color:#fff}
+.nav__burger{display:none;background:none;border:0;font-size:1.5rem;color:var(--navy);cursor:pointer}
+
+/* ---------------- HERO ---------------- */
+.hero{
+  position:relative;min-height:88vh;display:flex;align-items:flex-end;
+  color:#fff;background:#0d2733;overflow:hidden;
+}
+.hero__bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.03)}
+.hero__bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(13,39,51,.35) 0%,rgba(13,39,51,.15) 40%,rgba(13,39,51,.82) 100%)}
+.hero__inner{position:relative;z-index:2;padding-bottom:72px;max-width:760px}
+.hero__kicker{color:var(--gold-soft);letter-spacing:.22em;text-transform:uppercase;font-family:var(--font-head);font-weight:600;font-size:.8rem}
+.hero h1{color:#fff;font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:700;margin:.6rem 0 1rem;line-height:1.05}
+.hero p{font-size:clamp(1.05rem,2vw,1.3rem);max-width:620px;color:rgba(255,255,255,.92)}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:1.8rem}
+.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,.7);font-size:1.4rem;animation:bob 2s infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+/* ---------------- APARTMENTS GRID ---------------- */
+.apts{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:.3s ease;display:flex;flex-direction:column;
+}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.card__media{position:relative;aspect-ratio:4/3;overflow:hidden}
+.card__media img{width:100%;height:100%;object-fit:cover;transition:.5s ease}
+.card:hover .card__media img{transform:scale(1.06)}
+.card__badge{position:absolute;top:14px;left:14px;background:rgba(22,58,76,.88);color:#fff;
+  font-family:var(--font-head);font-size:.74rem;letter-spacing:.04em;padding:.35rem .7rem;border-radius:999px}
+.card__flag{position:absolute;top:14px;right:14px;background:var(--gold);color:#23303a;
+  font-family:var(--font-head);font-size:.7rem;padding:.3rem .6rem;border-radius:999px}
+.card__body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.card__nick{font-style:italic;color:var(--gold-d);font-size:.92rem;margin-bottom:.2rem}
+.card__title{font-size:1.28rem;margin-bottom:.5rem}
+.card__type{font-family:var(--font-head);font-size:.85rem;color:var(--teal);margin-bottom:.7rem}
+.card__short{color:var(--muted);font-size:.96rem;flex:1}
+.card__meta{display:flex;gap:1.1rem;flex-wrap:wrap;margin:1rem 0;color:var(--ink);font-size:.88rem}
+.card__meta span{display:inline-flex;align-items:center;gap:.35rem}
+.card__foot{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:auto}
+
+/* ---------------- SPLIT (about / places) ---------------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.split__media img{border-radius:18px;box-shadow:var(--shadow);width:100%;object-fit:cover}
+.split h2{font-size:clamp(1.7rem,3vw,2.3rem);margin:.4rem 0 1rem}
+.split p+p{margin-top:1rem}
+.places{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:8px}
+.place-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px;box-shadow:var(--shadow-sm)}
+.place-card h3{font-size:1.4rem;margin-bottom:.6rem}
+.place-card p{color:var(--muted);font-size:.98rem}
+
+/* ---------------- HOST strip ---------------- */
+.host{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:center}
+.host__photo{position:relative}
+.host__photo img{border-radius:18px;box-shadow:var(--shadow);aspect-ratio:4/5;object-fit:cover;object-position:center top}
+.host__sig{font-family:var(--font-head);color:var(--gold-d);font-size:1.1rem;margin-top:1rem;font-weight:600}
+
+/* ---------------- CONTACT ---------------- */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.contact__aside h2{font-size:clamp(1.7rem,3vw,2.3rem);margin-bottom:1rem}
+.contact__list{list-style:none;margin:1.6rem 0 0;display:flex;flex-direction:column;gap:1rem}
+.contact__list li{display:flex;gap:.8rem;align-items:flex-start;color:var(--ink)}
+.contact__list .ic{font-size:1.2rem}
+.contact__cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.8rem}
+.form{background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px;box-shadow:var(--shadow-sm)}
+.field{margin-bottom:1rem}
+.field label{display:block;font-family:var(--font-head);font-size:.85rem;margin-bottom:.35rem;color:var(--navy)}
+.field input,.field select,.field textarea{
+  width:100%;padding:.8rem .9rem;border:1px solid var(--line);border-radius:10px;
+  font-family:var(--font-body);font-size:.95rem;background:#fdfcfa;color:var(--ink);transition:.2s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,.18)}
+.field textarea{min-height:96px;resize:vertical}
+.form__msg{margin-top:.8rem;font-size:.9rem;display:none}
+.form__msg.ok{display:block;color:#1c7a45}
+.form__msg.err{display:block;color:#b3402e}
+.form .btn{width:100%;justify-content:center}
+
+/* ---------------- FOOTER ---------------- */
+.footer{background:var(--navy);color:rgba(255,255,255,.82);padding:56px 0 28px}
+.footer__top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px;align-items:flex-start}
+.footer__brand img{height:48px;background:#fff;border-radius:10px;padding:6px 10px}
+.footer a{color:rgba(255,255,255,.82)}
+.footer a:hover{color:var(--gold-soft)}
+.footer__links{display:flex;gap:1.5rem;flex-wrap:wrap;font-family:var(--font-head);font-size:.92rem}
+.footer__bottom{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.14);
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:.84rem;color:rgba(255,255,255,.6)}
+
+/* ---------------- DETALLE APARTAMENTO ---------------- */
+.detail-hero{position:relative;height:62vh;min-height:420px;background:#0d2733;overflow:hidden;cursor:zoom-in}
+.detail-hero img{width:100%;height:100%;object-fit:cover}
+.detail-hero__grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,39,51,.25),rgba(13,39,51,.7))}
+.detail-hero__cap{position:absolute;left:0;right:0;bottom:0;z-index:2;color:#fff;padding:0 0 34px}
+.detail-hero__cap .nick{font-style:italic;color:var(--gold-soft)}
+.detail-hero__cap h1{color:#fff;font-size:clamp(1.9rem,4vw,3rem);margin:.3rem 0}
+.gallery-count{position:absolute;right:18px;bottom:18px;z-index:2;background:rgba(22,58,76,.8);color:#fff;font-family:var(--font-head);font-size:.82rem;padding:.45rem .8rem;border-radius:999px}
+.detail-layout{display:grid;grid-template-columns:1.6fr .9fr;gap:48px;padding:64px 0}
+.chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.6rem}
+.chip{background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;padding:.45rem .9rem;font-family:var(--font-head);font-size:.85rem;color:var(--navy);display:inline-flex;gap:.4rem;align-items:center}
+.detail-body h2{font-size:1.5rem;margin:2rem 0 .8rem}
+.detail-body p{color:#384149}
+.amen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem 1.4rem;margin-top:1rem}
+.amen-grid li{list-style:none;display:flex;gap:.6rem;align-items:center;color:var(--ink);font-size:.96rem}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.thumbs img{aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;transition:.2s;border:2px solid transparent}
+.thumbs img:hover{transform:scale(1.03);border-color:var(--gold)}
+.booking-card{position:sticky;top:96px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow-sm)}
+.booking-card h3{font-size:1.25rem;margin-bottom:.3rem}
+.booking-card .price-note{color:var(--muted);font-size:.92rem;margin-bottom:1.2rem}
+.booking-card .btn{width:100%;justify-content:center;margin-bottom:.6rem}
+.booking-card .or{text-align:center;color:var(--muted);font-size:.8rem;margin:.7rem 0}
+.notice{background:#fff7e8;border:1px solid #f0dcae;color:#8a6d2f;border-radius:12px;padding:.8rem 1rem;font-size:.88rem;margin-top:1rem}
+.backlink{display:inline-flex;align-items:center;gap:.4rem;color:var(--teal);font-family:var(--font-head);font-size:.9rem;margin:24px 0 0}
+.map{width:100%;height:320px;border:0;border-radius:14px;margin-top:.6rem;box-shadow:var(--shadow-sm)}
+.contact .map{height:240px}
+
+/* ---------------- LIGHTBOX ---------------- */
+.lb{position:fixed;inset:0;background:rgba(10,24,31,.94);z-index:100;display:none;align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb img{max-width:92vw;max-height:86vh;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lb__close,.lb__nav{position:absolute;background:rgba(255,255,255,.12);border:0;color:#fff;cursor:pointer;
+  width:50px;height:50px;border-radius:50%;font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+.lb__close:hover,.lb__nav:hover{background:rgba(255,255,255,.28)}
+.lb__close{top:22px;right:22px}
+.lb__nav{top:50%;transform:translateY(-50%)}
+.lb__prev{left:22px}.lb__next{right:22px}
+.lb__counter{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:#fff;font-family:var(--font-head);font-size:.9rem}
+
+/* WhatsApp flotante */
+.fab{position:fixed;right:20px;bottom:20px;z-index:60;width:58px;height:58px;border-radius:50%;
+  background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.7rem;
+  box-shadow:0 10px 30px rgba(37,211,102,.45);transition:.25s}
+.fab:hover{transform:scale(1.08)}
+
+/* Reveal on scroll */
+.reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width:980px){
+  .apts{grid-template-columns:repeat(2,1fr)}
+  .split,.contact,.host{grid-template-columns:1fr;gap:34px}
+  .host__photo{max-width:360px;margin:0 auto}
+  .detail-layout{grid-template-columns:1fr;gap:32px}
+  .booking-card{position:static}
+  .places{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  .section{padding:60px 0}
+  .apts{grid-template-columns:1fr}
+  .nav__links{display:none}
+  .nav__links.open{display:flex;position:absolute;top:72px;left:0;right:0;background:#fff;
+    flex-direction:column;padding:18px 24px;border-bottom:1px solid var(--line);gap:1rem}
+  .nav__burger{display:block}
+  .amen-grid{grid-template-columns:1fr}
+  .thumbs{grid-template-columns:repeat(3,1fr)}
+}
