@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://margarivera.com/sitemap.xml
+Sitemap: https://miguelf660.github.io/plaza-brickell/sitemap.xml

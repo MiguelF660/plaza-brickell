@@ -16,6 +16,8 @@ window.SITE = {
   email: "Info@margarivera.com",
   emailHref: "mailto:Info@margarivera.com",
   domain: "margarivera.com",
+  // URL pública actual (cambiar aquí cuando se mude a dominio propio)
+  baseUrl: "https://miguelf660.github.io/plaza-brickell",
   instagram: "",                       // pendiente si Marga la tiene
   host: {
     name: "Marga Rivera",

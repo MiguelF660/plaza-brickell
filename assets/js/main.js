@@ -40,6 +40,7 @@
     f_send:  { es: "Enviar consulta", en: "Send inquiry" },
     f_ok:    { es: "¡Gracias! Te responderé enseguida. Si quieres respuesta inmediata, escríbeme por WhatsApp.", en: "Thank you! I'll get back to you shortly. For an instant reply, message me on WhatsApp." },
     f_err:   { es: "No se pudo enviar. Escríbeme directamente por WhatsApp, por favor.", en: "Couldn't send. Please message me directly on WhatsApp." },
+    f_req:   { es: "Por favor, indica al menos tu nombre y un teléfono válido.", en: "Please enter at least your name and a valid phone number." },
     m_beds:  { es: "hab", en: "bed" },
     m_baths: { es: "baños", en: "bath" },
     m_park:  { es: "parking", en: "parking" },
@@ -66,6 +67,11 @@
   function photoPath(id, n) {
     return "assets/img/apartments/" + id + "/" + String(n).padStart(2, "0") + ".jpg";
   }
+  /* Miniatura (480px) generada por _process_assets.py en <id>/t/ */
+  function thumbPath(id, n) {
+    return "assets/img/apartments/" + id + "/t/" + String(n).padStart(2, "0") + ".jpg";
+  }
+  function aptUrl(id) { return "apartment-" + id + ".html"; }
   function aptById(id) {
     return window.APARTMENTS.filter(function (a) { return a.id === id; })[0];
   }
@@ -78,7 +84,9 @@
       if (UI[k]) el.textContent = t(UI[k]);
     });
     document.querySelectorAll(".lang button").forEach(function (b) {
-      b.classList.toggle("is-active", b.getAttribute("data-lang") === LANG);
+      var active = b.getAttribute("data-lang") === LANG;
+      b.classList.toggle("is-active", active);
+      b.setAttribute("aria-pressed", active ? "true" : "false");
     });
   }
 
@@ -94,8 +102,10 @@
       var flag = a.proPhotosPending ? '<span class="card__flag">' + (LANG === "es" ? "Nuevo" : "New") + '</span>' : '';
       return '' +
         '<article class="card reveal">' +
-          '<a class="card__media" href="apartment.html?id=' + a.id + '">' +
-            '<img loading="lazy" src="' + photoPath(a.id, 1) + '" alt="' + a.nickname + '">' +
+          '<a class="card__media" href="' + aptUrl(a.id) + '">' +
+            '<img loading="lazy" src="' + thumbPath(a.id, 1) + '" ' +
+              'srcset="' + thumbPath(a.id, 1) + ' 480w, ' + photoPath(a.id, 1) + ' 1600w" ' +
+              'sizes="(max-width:680px) 92vw, (max-width:980px) 46vw, 380px" alt="' + a.nickname + '">' +
             '<span class="card__badge">#' + a.id + ' · The Plaza</span>' + flag +
           '</a>' +
           '<div class="card__body">' +
@@ -105,7 +115,7 @@
             '<p class="card__short">' + t(a.short) + '</p>' +
             '<div class="card__meta">' + meta.join("") + '</div>' +
             '<div class="card__foot">' +
-              '<a class="btn btn--navy" href="apartment.html?id=' + a.id + '">' + t(UI.b_view) + '</a>' +
+              '<a class="btn btn--navy" href="' + aptUrl(a.id) + '">' + t(UI.b_view) + '</a>' +
               '<a class="btn btn--ghost" target="_blank" rel="noopener" href="' + a.airbnb + '">Airbnb ↗</a>' +
             '</div>' +
           '</div>' +
@@ -129,7 +139,9 @@
   function renderDetail() {
     var root = document.getElementById("detail");
     if (!root) return;
-    var id = new URLSearchParams(location.search).get("id");
+    // Las páginas estáticas (apartment-<id>.html) fijan window.APT_ID;
+    // apartment.html?id=… se mantiene como fallback.
+    var id = window.APT_ID || new URLSearchParams(location.search).get("id");
     var a = aptById(id) || window.APARTMENTS[0];
     document.title = a.nickname + " · " + window.SITE.brand;
 
@@ -146,7 +158,7 @@
 
     var thumbs = "";
     for (var i = 1; i <= a.photos; i++) {
-      thumbs += '<img loading="lazy" data-i="' + (i - 1) + '" src="' + photoPath(a.id, i) + '" alt="' + a.nickname + ' ' + i + '">';
+      thumbs += '<img loading="lazy" data-i="' + (i - 1) + '" src="' + thumbPath(a.id, i) + '" alt="' + a.nickname + ' ' + i + '">';
     }
 
     var waMsg = (LANG === "es"
@@ -199,34 +211,48 @@
     setupLightbox(a);
   }
 
-  /* ---------------- Lightbox ---------------- */
+  /* ---------------- Lightbox ----------------
+     renderDetail() se re-ejecuta al cambiar de idioma: #thumbs y #heroImg son
+     elementos nuevos (se re-vinculan siempre), pero el lightbox y `document`
+     persisten — sus listeners se vinculan UNA sola vez (lbState.bound). */
+  var lbState = { apt: null, cur: 0, bound: false };
+  function lbShow(i) {
+    var lb = document.getElementById("lb");
+    var a = lbState.apt;
+    if (!lb || !a) return;
+    lbState.cur = (i + a.photos) % a.photos;
+    lb.querySelector("img").src = photoPath(a.id, lbState.cur + 1);
+    lb.querySelector(".lb__counter").textContent = (lbState.cur + 1) + " / " + a.photos;
+  }
+  function lbOpen(i) {
+    var lb = document.getElementById("lb");
+    lbShow(i); lb.classList.add("open"); document.body.style.overflow = "hidden";
+  }
+  function lbClose() {
+    var lb = document.getElementById("lb");
+    lb.classList.remove("open"); document.body.style.overflow = "";
+  }
   function setupLightbox(a) {
     var lb = document.getElementById("lb");
     if (!lb) return;
-    var img = lb.querySelector("img");
-    var counter = lb.querySelector(".lb__counter");
-    var cur = 0;
-    function show(i) {
-      cur = (i + a.photos) % a.photos;
-      img.src = photoPath(a.id, cur + 1);
-      counter.textContent = (cur + 1) + " / " + a.photos;
-    }
-    function open(i) { show(i); lb.classList.add("open"); document.body.style.overflow = "hidden"; }
-    function close() { lb.classList.remove("open"); document.body.style.overflow = ""; }
+    lbState.apt = a;
 
     document.getElementById("thumbs").addEventListener("click", function (e) {
-      var th = e.target.closest("img[data-i]"); if (th) open(parseInt(th.getAttribute("data-i"), 10));
+      var th = e.target.closest("img[data-i]"); if (th) lbOpen(parseInt(th.getAttribute("data-i"), 10));
     });
-    document.getElementById("heroImg").addEventListener("click", function () { open(0); });
-    lb.querySelector(".lb__close").addEventListener("click", close);
-    lb.querySelector(".lb__prev").addEventListener("click", function () { show(cur - 1); });
-    lb.querySelector(".lb__next").addEventListener("click", function () { show(cur + 1); });
-    lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+    document.getElementById("heroImg").addEventListener("click", function () { lbOpen(0); });
+
+    if (lbState.bound) return;
+    lbState.bound = true;
+    lb.querySelector(".lb__close").addEventListener("click", lbClose);
+    lb.querySelector(".lb__prev").addEventListener("click", function () { lbShow(lbState.cur - 1); });
+    lb.querySelector(".lb__next").addEventListener("click", function () { lbShow(lbState.cur + 1); });
+    lb.addEventListener("click", function (e) { if (e.target === lb) lbClose(); });
     document.addEventListener("keydown", function (e) {
       if (!lb.classList.contains("open")) return;
-      if (e.key === "Escape") close();
-      if (e.key === "ArrowLeft") show(cur - 1);
-      if (e.key === "ArrowRight") show(cur + 1);
+      if (e.key === "Escape") lbClose();
+      if (e.key === "ArrowLeft") lbShow(lbState.cur - 1);
+      if (e.key === "ArrowRight") lbShow(lbState.cur + 1);
     });
   }
 
@@ -247,6 +273,12 @@
         message: form.message.value.trim(),
         source: "web_plaza_brickell",
       };
+      if (data.name.length < 2 || data.phone.replace(/[^0-9]/g, "").length < 6) {
+        msg.className = "form__msg err";
+        msg.textContent = t(UI.f_req);
+        (data.name.length < 2 ? form.name : form.phone).focus();
+        return;
+      }
       var waText = (LANG === "es" ? "Hola Marga, consulta desde la web:\n" : "Hi Marga, inquiry from the website:\n") +
         "• " + data.name + "\n• " + data.phone + "\n• " + data.email + "\n" +
         (data.apartment ? "• " + data.apartment + "\n" : "") +
@@ -333,11 +365,11 @@
 
   /* ---------------- Datos estructurados (SEO / Google) ---------------- */
   function injectStructuredData() {
-    var SITE_URL = "https://" + (window.SITE.domain || "margarivera.com");
+    var SITE_URL = window.SITE.baseUrl || "https://" + (window.SITE.domain || "margarivera.com");
     var isDetail = !!document.getElementById("detail");
     var graph;
     if (isDetail) {
-      var id = new URLSearchParams(location.search).get("id");
+      var id = window.APT_ID || new URLSearchParams(location.search).get("id");
       var a = aptById(id) || window.APARTMENTS[0];
       var imgs = [];
       for (var i = 1; i <= Math.min(a.photos, 8); i++) imgs.push(SITE_URL + "/" + photoPath(a.id, i));
@@ -348,7 +380,7 @@
         numberOfBedrooms: a.beds || undefined,
         numberOfBathroomsTotal: a.baths || undefined,
         image: imgs,
-        url: SITE_URL + "/apartment.html?id=" + a.id,
+        url: SITE_URL + "/" + aptUrl(a.id),
         address: { "@type": "PostalAddress", streetAddress: a.tower, addressLocality: "Miami", addressRegion: "FL", addressCountry: "US" },
       };
     } else {
