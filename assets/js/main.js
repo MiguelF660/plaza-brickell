@@ -116,7 +116,7 @@
             '<div class="card__meta">' + meta.join("") + '</div>' +
             '<div class="card__foot">' +
               '<a class="btn btn--navy" href="' + aptUrl(a.id) + '">' + t(UI.b_view) + '</a>' +
-              '<a class="btn btn--ghost" target="_blank" rel="noopener" href="' + a.airbnb + '">Airbnb ↗</a>' +
+              (a.airbnb ? '<a class="btn btn--ghost" target="_blank" rel="noopener" href="' + a.airbnb + '">Airbnb ↗</a>' : '') +
             '</div>' +
           '</div>' +
         '</article>';
@@ -200,8 +200,8 @@
               '<h3>' + t(UI.d_book_t) + '</h3>' +
               '<p class="price-note">' + t(UI.d_price) + '</p>' +
               '<a class="btn btn--wa" target="_blank" rel="noopener" href="' + waLink(waMsg) + '">💬 WhatsApp</a>' +
-              '<div class="or">— ' + t(UI.d_or) + ' —</div>' +
-              '<a class="btn btn--gold" target="_blank" rel="noopener" href="' + a.airbnb + '">' + t(UI.b_airbnb) + ' ↗</a>' +
+              (a.airbnb ? '<div class="or">— ' + t(UI.d_or) + ' —</div>' +
+              '<a class="btn btn--gold" target="_blank" rel="noopener" href="' + a.airbnb + '">' + t(UI.b_airbnb) + ' ↗</a>' : '') +
               '<a class="btn btn--ghost" href="index.html#contacto">' + t(UI.b_check) + '</a>' +
             '</div>' +
           '</aside>' +
