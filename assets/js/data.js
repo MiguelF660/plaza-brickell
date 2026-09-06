@@ -47,6 +47,34 @@ window.AMENITIES = {
   balcony: { es: "Balcón con vistas",      en: "Balcony with views",      icon: "🌇" },
 };
 
+/* Puntos fuertes (3 por apartamento, estilo Airbnb) */
+window.HIGHLIGHTS = {
+  bayview:  { icon: "🌊", es: "Vistas a la bahía y al skyline", en: "Bay & skyline views",
+              sub: { es: "Balcón privado con vistas abiertas a Biscayne Bay.", en: "Private balcony with open views over Biscayne Bay." } },
+  oceanview:{ icon: "🌅", es: "Amanecer sobre el océano", en: "Sunrise over the ocean",
+              sub: { es: "Océano, bahía, río y skyline desde una misma residencia.", en: "Ocean, bay, river and skyline from a single residence." } },
+  cityview: { icon: "🏙️", es: "Vistas al skyline de Brickell", en: "Brickell skyline views",
+              sub: { es: "Vistas abiertas a la ciudad en la segunda torre de The Plaza.", en: "Open city views in The Plaza's second tower." } },
+  resort:   { icon: "🏊", es: "Piscinas estilo resort", en: "Resort-style pools",
+              sub: { es: "Acceso a las piscinas, gimnasio y áreas sociales del edificio.", en: "Access to the building's pools, gym and social areas." } },
+  family:   { icon: "👨‍👩‍👧‍👦", es: "Ideal para familias y grupos", en: "Great for families & groups",
+              sub: { es: "Espacios amplios con zonas privadas para descansar.", en: "Generous spaces with private areas to rest." } },
+  location: { icon: "📍", es: "En el corazón de Brickell", en: "In the heart of Brickell",
+              sub: { es: "Restaurantes, tiendas y ocio a pocos pasos.", en: "Restaurants, shops and nightlife steps away." } },
+  clean:    { icon: "✨", es: "Limpieza impecable", en: "Impeccable cleaning",
+              sub: { es: "Preparado por un equipo profesional antes de cada estancia.", en: "Prepared by a professional team before every stay." } },
+  parking:  { icon: "🚗", es: "Parking privado incluido", en: "Private parking included",
+              sub: { es: "Una plaza de estacionamiento en el edificio.", en: "One parking space in the building." } },
+};
+
+/* Normas de la casa comunes */
+window.RULES = {
+  nosmoke:  { icon: "🚭", es: "No se permite fumar", en: "No smoking" },
+  nopets:   { icon: "🐾", es: "No se admiten mascotas", en: "No pets" },
+  noparty:  { icon: "🎉", es: "No se permiten fiestas ni eventos", en: "No parties or events" },
+  quiet:    { icon: "🤫", es: "Horas de silencio", en: "Quiet hours" },
+};
+
 /* Textos compartidos: la zona y el edificio */
 window.PLACES = {
   brickell: {
@@ -81,6 +109,15 @@ window.PLACES = {
 window.APARTMENTS = [
   {
     id: "5509",
+    guests: 10, bedsTotal: 6, rating: 4.67, checkin: "16:00", checkout: "11:00",
+    highlights: ["oceanview","family","resort"],
+    bedrooms: [
+      { name: { es: "Dormitorio 1", en: "Bedroom 1" }, beds: { es: "1 cama king", en: "1 king bed" } },
+      { name: { es: "Dormitorio 2", en: "Bedroom 2" }, beds: { es: "1 cama doble", en: "1 double bed" } },
+      { name: { es: "Dormitorio 3", en: "Bedroom 3" }, beds: { es: "1 cama individual", en: "1 single bed" } },
+      { name: { es: "Salón", en: "Living room" }, beds: { es: "1 sofá cama", en: "1 sofa bed" } },
+    ],
+    rules: ["nosmoke","nopets","noparty"],
     nickname: "A Lighthouse in the City",
     headline: { es: "Penthouse con vistas al mar", en: "Penthouse with ocean views" },
     type:  { es: "Penthouse · 4 hab · 2,5 baños", en: "Penthouse · 4 bed · 2.5 bath" },
@@ -101,6 +138,14 @@ window.APARTMENTS = [
   },
   {
     id: "3204",
+    guests: 4, bedsTotal: 4, rating: null, checkin: "16:00", checkout: "11:00",
+    highlights: ["bayview","clean","location"],
+    bedrooms: [
+      { name: { es: "Dormitorio 1", en: "Bedroom 1" }, beds: { es: "1 cama king", en: "1 king bed" } },
+      { name: { es: "Dormitorio 2", en: "Bedroom 2" }, beds: { es: "1 cama queen", en: "1 queen bed" } },
+      { name: { es: "Salón", en: "Living room" }, beds: { es: "1 sofá cama", en: "1 sofa bed" } },
+    ],
+    rules: ["nosmoke","nopets","noparty","quiet"],
     nickname: "In the Sun & Fun Capital of the World",
     headline: { es: "Vistas a la bahía y al skyline", en: "Bay & skyline views" },
     type:  { es: "2 hab · 2 baños", en: "2 bed · 2 bath" },
@@ -121,6 +166,14 @@ window.APARTMENTS = [
   },
   {
     id: "4405",
+    guests: 6, bedsTotal: 4, rating: 4.72, checkin: "16:00", checkout: "11:00",
+    highlights: ["bayview","family","resort"],
+    bedrooms: [
+      { name: { es: "Dormitorio 1", en: "Bedroom 1" }, beds: { es: "1 cama king", en: "1 king bed" } },
+      { name: { es: "Dormitorio 2", en: "Bedroom 2" }, beds: { es: "2 camas queen", en: "2 queen beds" } },
+      { name: { es: "Salón", en: "Living room" }, beds: { es: "1 sofá cama", en: "1 sofa bed" } },
+    ],
+    rules: ["nosmoke","nopets","noparty"],
     nickname: "Glide over the Bay at Brickell",
     headline: { es: "Planta 44 con vistas a la bahía y al skyline", en: "44th floor with bay & skyline views" },
     type:  { es: "2 hab · 2 baños", en: "2 bed · 2 bath" },
@@ -141,6 +194,13 @@ window.APARTMENTS = [
   },
   {
     id: "4107",
+    guests: 6, bedsTotal: 3, rating: 4.86, checkin: "16:00", checkout: "11:00",
+    highlights: ["bayview","clean","location"],
+    bedrooms: [
+      { name: { es: "Dormitorio 1", en: "Bedroom 1" }, beds: { es: "1 cama king", en: "1 king bed" } },
+      { name: { es: "Dormitorio 2", en: "Bedroom 2" }, beds: { es: "2 camas individuales", en: "2 single beds" } },
+    ],
+    rules: ["nosmoke","nopets","noparty"],
     nickname: "The Manhattan of the South",
     headline: { es: "Planta 41 con balcón a la bahía", en: "41st floor with a bay-view balcony" },
     type:  { es: "2 hab · 2 baños", en: "2 bed · 2 bath" },
@@ -161,10 +221,17 @@ window.APARTMENTS = [
   },
   {
     id: "3405",
+    guests: 6, bedsTotal: 3, rating: 4.67, checkin: "16:00", checkout: "11:00",
+    highlights: ["cityview","resort","parking"],
+    bedrooms: [
+      { name: { es: "Dormitorio 1", en: "Bedroom 1" }, beds: { es: "1 cama king", en: "1 king bed" } },
+      { name: { es: "Dormitorio 2", en: "Bedroom 2" }, beds: { es: "2 camas dobles", en: "2 double beds" } },
+    ],
+    rules: ["nosmoke","nopets","noparty"],
     nickname: "Rumba & Salsa only at Miami's Brickell",
     headline: { es: "Vistas urbanas al skyline", en: "Urban skyline views" },
-    type:  { es: "Apartamento en The Plaza · vistas urbanas", en: "Apartment at The Plaza · city views" },
-    beds: null, baths: null, parking: 1,
+    type:  { es: "2 hab · 2 baños", en: "2 bed · 2 bath" },
+    beds: 2, baths: 2, parking: 1,
     view:  { es: "Vistas urbanas / skyline (sin mar)", en: "Urban / skyline views (no ocean)" },
     tower: "951 Brickell Ave, Miami, FL 33131",
     photos: 7,

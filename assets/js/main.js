@@ -59,6 +59,36 @@
     d_pro:   { es: "Próximamente fotos profesionales de este apartamento.", en: "Professional photos of this apartment coming soon." },
     foot_rights:{ es: "Todos los derechos reservados.", en: "All rights reserved." },
     photos:  { es: "fotos", en: "photos" },
+    d_allphotos:{ es: "Mostrar todas las fotos", en: "Show all photos" },
+    d_entire:{ es: "Apartamento entero en Miami", en: "Entire rental unit in Miami" },
+    d_guests:{ es: "huéspedes", en: "guests" },
+    d_bedrooms:{ es: "habitaciones", en: "bedrooms" },
+    d_bedsn: { es: "camas", en: "beds" },
+    d_bathsn:{ es: "baños", en: "baths" },
+    d_hostby:{ es: "Anfitriona:", en: "Hosted by" },
+    d_hostsub:{ es: "Vive en Brickell · Respuesta rápida por WhatsApp", en: "Lives in Brickell · Fast replies on WhatsApp" },
+    d_more:  { es: "Mostrar más", en: "Show more" },
+    d_less:  { es: "Mostrar menos", en: "Show less" },
+    d_sleep: { es: "Dónde dormirás", en: "Where you'll sleep" },
+    d_offers:{ es: "Qué ofrece este alojamiento", en: "What this place offers" },
+    d_where: { es: "Dónde estarás", en: "Where you'll be" },
+    d_know:  { es: "Lo que debes saber", en: "Things to know" },
+    d_rules: { es: "Normas de la casa", en: "House rules" },
+    d_checkin:{ es: "Entrada a partir de las", en: "Check-in after" },
+    d_checkout:{ es: "Salida antes de las", en: "Checkout before" },
+    d_maxg:  { es: "Máximo", en: "Maximum" },
+    d_cancel:{ es: "Cancelación", en: "Cancellation" },
+    d_cancel_t:{ es: "Consulta las condiciones de cancelación al reservar. Reservando directo con Marga tienes flexibilidad y sin comisiones de plataforma.", en: "Cancellation terms are confirmed when you book. Booking direct with Marga gives you flexibility with no platform fees." },
+    d_book_t2:{ es: "Reserva directa", en: "Book direct" },
+    d_book_s:{ es: "Mejor precio garantizado, sin comisiones de plataforma", en: "Best price guaranteed, no platform fees" },
+    d_in:    { es: "Llegada", en: "Check-in" },
+    d_out:   { es: "Salida", en: "Checkout" },
+    d_guests_l:{ es: "Huéspedes", en: "Guests" },
+    d_reserve:{ es: "Consultar disponibilidad", en: "Check availability" },
+    d_nocharge:{ es: "No se te cobrará nada todavía", en: "You won't be charged yet" },
+    d_wa_hint:{ es: "Te contesto por WhatsApp con precio y disponibilidad.", en: "I'll reply on WhatsApp with price and availability." },
+    d_rating:{ es: "valoración en Airbnb", en: "Airbnb rating" },
+    d_new:   { es: "Nuevo", en: "New" },
   };
 
   function waLink(msg) {
@@ -135,78 +165,147 @@
     sel.innerHTML = opts;
   }
 
-  /* ---------------- Render: página de detalle ---------------- */
+  /* ---------------- Render: página de detalle (estilo Airbnb) ---------------- */
   function renderDetail() {
     var root = document.getElementById("detail");
     if (!root) return;
-    // Las páginas estáticas (apartment-<id>.html) fijan window.APT_ID;
-    // apartment.html?id=… se mantiene como fallback.
     var id = window.APT_ID || new URLSearchParams(location.search).get("id");
     var a = aptById(id) || window.APARTMENTS[0];
-    document.title = a.nickname + " · " + window.SITE.brand;
+    var S = window.SITE;
+    document.title = a.nickname + " · " + S.brand;
 
-    var chips = [];
-    if (a.beds) chips.push('<span class="chip">🛏️ ' + a.beds + ' ' + t(UI.m_beds) + '</span>');
-    if (a.baths) chips.push('<span class="chip">🛁 ' + a.baths + ' ' + t(UI.m_baths) + '</span>');
-    if (a.parking) chips.push('<span class="chip">🚗 ' + t(UI.m_park) + '</span>');
-    chips.push('<span class="chip">🌇 ' + t(a.view) + '</span>');
+    /* Mosaico: 1 grande + 4 pequeñas */
+    var mosaic = '';
+    for (var m = 1; m <= Math.min(5, a.photos); m++) {
+      mosaic += '<div class="mosaic__cell" data-i="' + (m - 1) + '"><img ' + (m === 1 ? '' : 'loading="lazy" ') +
+        'src="' + photoPath(a.id, m) + '" alt="' + a.nickname + ' ' + m + '"></div>';
+    }
+
+    /* Resumen tipo "4 huéspedes · 2 habitaciones · 4 camas · 2 baños" */
+    var facts = [];
+    if (a.guests) facts.push(a.guests + ' ' + t(UI.d_guests));
+    if (a.beds) facts.push(a.beds + ' ' + t(UI.d_bedrooms));
+    if (a.bedsTotal) facts.push(a.bedsTotal + ' ' + t(UI.d_bedsn));
+    if (a.baths) facts.push(a.baths + ' ' + t(UI.d_bathsn));
+    var rating = a.rating
+      ? '<span class="rating">★ ' + a.rating.toFixed(2) + ' <span class="muted">· ' + t(UI.d_rating) + '</span></span>'
+      : '<span class="rating"><span class="badge-new">' + t(UI.d_new) + '</span></span>';
+
+    var highlights = (a.highlights || []).map(function (k) {
+      var h = window.HIGHLIGHTS[k]; if (!h) return '';
+      return '<li><span class="hl__icon">' + h.icon + '</span><div><strong>' + t(h) + '</strong><span>' + t(h.sub) + '</span></div></li>';
+    }).join('');
+
+    var sleep = (a.bedrooms || []).map(function (b) {
+      return '<div class="sleep__card"><div class="sleep__icon">🛏️</div><strong>' + t(b.name) + '</strong><span>' + t(b.beds) + '</span></div>';
+    }).join('');
 
     var amen = a.amenities.map(function (k) {
-      var x = window.AMENITIES[k]; if (!x) return "";
-      return '<li>' + x.icon + ' ' + t(x) + '</li>';
-    }).join("");
+      var x = window.AMENITIES[k]; if (!x) return '';
+      return '<li><span>' + x.icon + '</span>' + t(x) + '</li>';
+    }).join('');
 
-    var thumbs = "";
+    var rules = (a.rules || []).map(function (k) {
+      var r = window.RULES[k]; if (!r) return '';
+      return '<li>' + r.icon + ' ' + t(r) + '</li>';
+    }).join('');
+
+    var thumbs = '';
     for (var i = 1; i <= a.photos; i++) {
       thumbs += '<img loading="lazy" data-i="' + (i - 1) + '" src="' + thumbPath(a.id, i) + '" alt="' + a.nickname + ' ' + i + '">';
     }
 
-    var waMsg = (LANG === "es"
-      ? "Hola Marga, me interesa el apartamento #" + a.id + " (" + a.nickname + ") de Plaza Brickell Collection. ¿Disponibilidad?"
-      : "Hi Marga, I'm interested in apartment #" + a.id + " (" + a.nickname + ") at Plaza Brickell Collection. Is it available?");
+    var guestOpts = '';
+    for (var g = 1; g <= (a.guests || 8); g++) guestOpts += '<option value="' + g + '"' + (g === 2 ? ' selected' : '') + '>' + g + '</option>';
 
     var notice = a.proPhotosPending ? '<div class="notice">📸 ' + t(UI.d_pro) + '</div>' : '';
+    var today = new Date().toISOString().slice(0, 10);
 
     root.innerHTML = '' +
-      '<div class="detail-hero" id="heroImg">' +
-        '<img src="' + photoPath(a.id, 1) + '" alt="' + a.nickname + '">' +
-        '<div class="detail-hero__grad"></div>' +
-        '<div class="wrap detail-hero__cap">' +
-          '<div class="nick">“' + a.nickname + '”</div>' +
-          '<h1>' + t(a.headline) + '</h1>' +
-          '<div class="eyebrow" style="color:#fff;opacity:.85">#' + a.id + ' · The Plaza on Brickell</div>' +
-        '</div>' +
-        '<span class="gallery-count">📷 ' + a.photos + ' ' + t(UI.photos) + '</span>' +
-      '</div>' +
-      '<div class="wrap">' +
+      '<div class="wrap detail">' +
         '<a class="backlink" href="index.html#apartamentos">← ' + t(UI.d_back) + '</a>' +
+        '<header class="detail__head">' +
+          '<h1>' + t(a.headline) + ' <span class="nick">“' + a.nickname + '”</span></h1>' +
+          '<div class="detail__sub">' + rating + '<span class="dot">·</span><span>The Plaza on Brickell · #' + a.id + '</span><span class="dot">·</span><span>Brickell, Miami</span></div>' +
+        '</header>' +
+        '<div class="mosaic" id="mosaic">' + mosaic +
+          '<button class="mosaic__all" data-i="0">▦ ' + t(UI.d_allphotos) + ' (' + a.photos + ')</button>' +
+        '</div>' +
         '<div class="detail-layout">' +
           '<div class="detail-body">' +
-            '<div class="card__type" style="color:var(--teal)">' + t(a.type) + ' · ' + a.tower + '</div>' +
-            '<div class="chips" style="margin-top:1rem">' + chips.join("") + '</div>' +
-            '<h2>' + t(UI.d_about) + '</h2>' +
-            '<p>' + t(a.description) + '</p>' +
-            notice +
-            '<h2>' + t(UI.d_amen) + '</h2>' +
-            '<ul class="amen-grid">' + amen + '</ul>' +
-            '<h2>' + t(UI.d_gallery) + '</h2>' +
-            '<div class="thumbs" id="thumbs">' + thumbs + '</div>' +
-            '<h2>' + t(UI.d_location) + '</h2>' +
-            '<iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
-              'src="https://www.google.com/maps?q=' + encodeURIComponent(a.tower) + '&output=embed"></iframe>' +
+            '<section class="sec sec--summary">' +
+              '<h2>' + t(UI.d_entire) + '</h2>' +
+              '<p class="facts">' + facts.join(' <span class="dot">·</span> ') + '</p>' +
+            '</section>' +
+            '<section class="sec host">' +
+              '<img src="assets/img/brand/marga.jpg" alt="' + S.host.name + '">' +
+              '<div><strong>' + t(UI.d_hostby) + ' ' + S.host.name + '</strong><span>' + t(UI.d_hostsub) + '</span></div>' +
+            '</section>' +
+            '<section class="sec"><ul class="hl">' + highlights + '</ul></section>' +
+            '<section class="sec">' +
+              '<div class="desc collapsed" id="desc"><p>' + t(a.description) + '</p></div>' +
+              '<button class="linkbtn" id="descToggle">' + t(UI.d_more) + ' ›</button>' +
+              notice +
+            '</section>' +
+            (sleep ? '<section class="sec"><h2>' + t(UI.d_sleep) + '</h2><div class="sleep">' + sleep + '</div></section>' : '') +
+            '<section class="sec"><h2>' + t(UI.d_offers) + '</h2><ul class="amen-grid">' + amen + '</ul></section>' +
+            '<section class="sec"><h2>' + t(UI.d_gallery) + '</h2><div class="thumbs" id="thumbs">' + thumbs + '</div></section>' +
           '</div>' +
           '<aside>' +
             '<div class="booking-card">' +
-              '<h3>' + t(UI.d_book_t) + '</h3>' +
-              '<p class="price-note">' + t(UI.d_price) + '</p>' +
-              '<a class="btn btn--wa" target="_blank" rel="noopener" href="' + waLink(waMsg) + '">💬 WhatsApp</a>' +
+              '<h3>' + t(UI.d_book_t2) + '</h3>' +
+              '<p class="price-note">' + t(UI.d_book_s) + '</p>' +
+              '<form class="bookform" id="bookform">' +
+                '<div class="bookform__row">' +
+                  '<label><span>' + t(UI.d_in) + '</span><input type="date" name="in" min="' + today + '" required></label>' +
+                  '<label><span>' + t(UI.d_out) + '</span><input type="date" name="out" min="' + today + '" required></label>' +
+                '</div>' +
+                '<label class="bookform__g"><span>' + t(UI.d_guests_l) + '</span><select name="g">' + guestOpts + '</select></label>' +
+                '<button type="submit" class="btn btn--wa">💬 ' + t(UI.d_reserve) + '</button>' +
+                '<p class="nocharge">' + t(UI.d_nocharge) + '</p>' +
+                '<p class="wa-hint">' + t(UI.d_wa_hint) + '</p>' +
+              '</form>' +
               (a.airbnb ? '<div class="or">— ' + t(UI.d_or) + ' —</div>' +
-              '<a class="btn btn--gold" target="_blank" rel="noopener" href="' + a.airbnb + '">' + t(UI.b_airbnb) + ' ↗</a>' : '') +
-              '<a class="btn btn--ghost" href="index.html#contacto">' + t(UI.b_check) + '</a>' +
+              '<a class="btn btn--ghost" target="_blank" rel="noopener" href="' + a.airbnb + '">' + t(UI.b_airbnb) + ' ↗</a>' : '') +
             '</div>' +
           '</aside>' +
         '</div>' +
+        '<section class="sec sec--wide">' +
+          '<h2>' + t(UI.d_where) + '</h2>' +
+          '<p class="muted">' + a.tower + '</p>' +
+          '<iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
+            'src="https://www.google.com/maps?q=' + encodeURIComponent(a.tower) + '&output=embed"></iframe>' +
+        '</section>' +
+        '<section class="sec sec--wide">' +
+          '<h2>' + t(UI.d_know) + '</h2>' +
+          '<div class="know">' +
+            '<div><h4>' + t(UI.d_rules) + '</h4><ul>' +
+              (a.checkin ? '<li>🕓 ' + t(UI.d_checkin) + ' ' + a.checkin + '</li>' : '') +
+              (a.checkout ? '<li>🕚 ' + t(UI.d_checkout) + ' ' + a.checkout + '</li>' : '') +
+              (a.guests ? '<li>👥 ' + t(UI.d_maxg) + ' ' + a.guests + ' ' + t(UI.d_guests) + '</li>' : '') +
+              rules + '</ul></div>' +
+            '<div><h4>' + t(UI.d_cancel) + '</h4><p>' + t(UI.d_cancel_t) + '</p></div>' +
+          '</div>' +
+        '</section>' +
       '</div>';
+
+    /* Descripción plegable */
+    var desc = document.getElementById('desc'), tog = document.getElementById('descToggle');
+    if (desc.scrollHeight <= 260) { tog.style.display = 'none'; desc.classList.remove('collapsed'); }
+    tog.addEventListener('click', function () {
+      var c = desc.classList.toggle('collapsed');
+      tog.textContent = (c ? t(UI.d_more) : t(UI.d_less)) + ' ›';
+    });
+
+    /* Formulario de reserva → WhatsApp con fechas */
+    document.getElementById('bookform').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = e.target, din = f.in.value, dout = f.out.value, g = f.g.value;
+      var msg = (LANG === 'es'
+        ? 'Hola Marga, me interesa el apartamento #' + a.id + ' (' + a.nickname + ') del ' + din + ' al ' + dout + ' para ' + g + ' huéspedes. ¿Disponibilidad y precio?'
+        : 'Hi Marga, I am interested in apartment #' + a.id + ' (' + a.nickname + ') from ' + din + ' to ' + dout + ' for ' + g + ' guests. Availability and price?');
+      window.open(waLink(msg), '_blank', 'noopener');
+    });
 
     setupLightbox(a);
   }
@@ -240,7 +339,9 @@
     document.getElementById("thumbs").addEventListener("click", function (e) {
       var th = e.target.closest("img[data-i]"); if (th) lbOpen(parseInt(th.getAttribute("data-i"), 10));
     });
-    document.getElementById("heroImg").addEventListener("click", function () { lbOpen(0); });
+    document.getElementById("mosaic").addEventListener("click", function (e) {
+      var c = e.target.closest("[data-i]"); if (c) lbOpen(parseInt(c.getAttribute("data-i"), 10));
+    });
 
     if (lbState.bound) return;
     lbState.bound = true;
