@@ -121,14 +121,14 @@ window.APARTMENTS = [
   },
   {
     id: "4405",
-    nickname: "Sky & Bay on the 44th",
+    nickname: "Glide over the Bay at Brickell",
     headline: { es: "Planta 44 con vistas a la bahía y al skyline", en: "44th floor with bay & skyline views" },
     type:  { es: "2 hab · 2 baños", en: "2 bed · 2 bath" },
     beds: 2, baths: 2, parking: 1,
     view:  { es: "Bahía de Biscayne y skyline", en: "Biscayne Bay & skyline" },
     tower: "950 Brickell Bay Dr, Miami, FL 33131",
     photos: 28,
-    airbnb: null,
+    airbnb: "https://www.airbnb.com/rooms/40427154",
     short: {
       es: "Luminoso apartamento de 2 habitaciones en la planta 44, todo en blanco, con balcón abierto a la bahía y al skyline de Brickell.",
       en: "Bright 2-bedroom apartment on the 44th floor, all in white, with a balcony open to the bay and the Brickell skyline.",
@@ -141,14 +141,14 @@ window.APARTMENTS = [
   },
   {
     id: "4107",
-    nickname: "Brickell Bay Living",
+    nickname: "The Manhattan of the South",
     headline: { es: "Planta 41 con balcón a la bahía", en: "41st floor with a bay-view balcony" },
     type:  { es: "2 hab · 2 baños", en: "2 bed · 2 bath" },
     beds: 2, baths: 2, parking: 1,
     view:  { es: "Bahía de Biscayne y skyline", en: "Biscayne Bay & skyline" },
     tower: "950 Brickell Bay Dr, Miami, FL 33131",
     photos: 26,
-    airbnb: null,
+    airbnb: "https://www.airbnb.com/rooms/2277794",
     short: {
       es: "Elegante 2 habitaciones en la planta 41 con cocina de diseño, dos baños completos y balcón sobre la bahía.",
       en: "Elegant 2-bedroom on the 41st floor with a designer kitchen, two full bathrooms and a balcony over the bay.",
